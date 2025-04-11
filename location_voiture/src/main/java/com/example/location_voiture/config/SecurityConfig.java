@@ -43,7 +43,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager() {
         // Fournisseur d'authentification basé sur les données de la base (DAO)
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-       // authProvider.setUserDetailsService(userDetailsService); // Injecte le UserDetailsService
+        authProvider.setUserDetailsService(userDetailsService); // Injecte le UserDetailsService
         authProvider.setPasswordEncoder(passwordEncoder());     // Définit l’encodeur de mot de passe
 
         // Retourne un AuthenticationManager basé sur ce provider
@@ -71,7 +71,7 @@ public class SecurityConfig {
 
                 // Ajoute notre filtre JWT AVANT le filtre UsernamePasswordAuthenticationFilter
                 // Cela permet d’authentifier via JWT au lieu de formulaire classique
-             //   .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
                 // Construit la chaîne de filtres de sécurité
                 .build();
