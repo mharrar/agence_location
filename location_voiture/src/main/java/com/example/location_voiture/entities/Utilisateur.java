@@ -38,4 +38,5 @@ public class Utilisateur {
     private boolean enabled = false;
 
     private String activationToken;
+
 }

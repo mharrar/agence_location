@@ -18,7 +18,7 @@ public class Agence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String nom_agence;
 
     @Column(nullable = false)
@@ -31,5 +31,7 @@ public class Agence {
     @OneToOne
     @JoinColumn(name = "utilisateur_id", referencedColumnName = "id")
     private Utilisateur utilisateur;
+
+
 
 }
