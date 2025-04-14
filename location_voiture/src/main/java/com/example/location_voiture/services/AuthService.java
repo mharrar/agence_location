@@ -3,11 +3,13 @@ package com.example.location_voiture.services;
 import com.example.location_voiture.dto.ApiResponse;
 import com.example.location_voiture.dto.LoginRequest;
 import com.example.location_voiture.dto.RegisterRequest;
+import com.example.location_voiture.entities.Client;
 import com.example.location_voiture.entities.Role;
 import com.example.location_voiture.entities.RoleName;
 import com.example.location_voiture.entities.Utilisateur;
 import com.example.location_voiture.exceptions.auth.*;
 import com.example.location_voiture.exceptions.email.SendingEmailException;
+import com.example.location_voiture.repositories.ClientRepository;
 import com.example.location_voiture.repositories.RoleRepository;
 import com.example.location_voiture.repositories.UtilisateurRepository;
 import jakarta.mail.MessagingException;
@@ -42,6 +44,9 @@ public class AuthService {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Transactional
     public ApiResponse<String> register(RegisterRequest request) throws Exception {
@@ -78,6 +83,12 @@ public class AuthService {
 
         // Sauvegarder l'utilisateur dans la base de données
         utilisateurRepository.save(utilisateur);
+
+        if (userRoles.contains(roleRepository.findByName(RoleName.ROLE_CLIENT).orElseThrow())) {
+            Client client = new Client();
+            client.setUtilisateur(utilisateur);  // Associer le client à l'utilisateur
+            clientRepository.save(client);  // Sauvegarder le client dans la base de données
+        }
 
         // Générer le lien d'activation
         String activationLink = "http://localhost:8080/auth/activate?token=" + utilisateur.getActivationToken();
