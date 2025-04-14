@@ -33,6 +33,6 @@ public class Voiture {
 
     @ManyToOne
     @JoinColumn(name = "agence_id", referencedColumnName = "id")
-    private Agence agence;
+    private Agency agency;
 
 }
